@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  backend:
+    build: "./backend"
+    depends_on:
+      - redis-db
+    environment:
+      - PORT=8100
+      - REDIS_PASSWORD=eh97SDF2dfj
+      - REDIS_URL=redis://redis-db:6379
+    ports:
+      - 8100:8100
+    volumes:
+      - ./app:/opt/app
+
+  redis-db:
+    image: redis:7.0.5-alpine
+    ports:
+      - 6379:6379
+    command: redis-server --requirepass eh97SDF2dfj
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
+    external: false
+
