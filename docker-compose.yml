@@ -11,7 +11,7 @@ services:
     ports:
       - 8100:8100
     volumes:
-      - ./app:/opt/app
+      - ./backend:/opt/app
 
   redis-db:
     image: redis:7.0.5-alpine
