@@ -1,16 +1,27 @@
 require("dotenv").config();
 
-const redis = require("redis");
+const cors = require("cors");
+const express = require("express");
 
-const REDIS_URL = process.env.REDIS_URL;
-const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
+const redisClient = require("./redis/redisClient");
+const postRoutes = require("./routes/posts");
 
-console.log(REDIS_URL, REDIS_PASSWORD);
-const client = redis.createClient({
-  url: REDIS_URL,
-  password: REDIS_PASSWORD,
-});
+const PORT = process.env.PORT;
 
-(async () => await client.connect())();
+const app = express();
 
-client.on("connect", () => console.log("connected"));
+// middlewares
+app.use(
+  cors({
+    origin: (origin, cb) => cb(null, true),
+    credentials: true,
+  })
+);
+
+app.use(express.json());
+
+app.use("/api/posts", postRoutes);
+
+redisClient.client.connect();
+
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
