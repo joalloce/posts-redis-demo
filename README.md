@@ -8,7 +8,7 @@ It uses the following technologies:
 - Axios
 - Express
   
-  ## Setup
-  ```
-  docker-compose up
-  ```
+## Setup
+```
+docker-compose up
+```
