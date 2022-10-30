@@ -13,6 +13,17 @@ services:
     volumes:
       - ./backend:/opt/app
 
+  notification:
+    build: "./notification"
+    depends_on:
+      - redis-db
+      - backend
+    environment:
+      - REDIS_PASSWORD=eh97SDF2dfj
+      - REDIS_URL=redis://redis-db:6379
+    volumes:
+      - ./notification:/opt/app
+
   redis-db:
     image: redis:7.0.5-alpine
     ports:

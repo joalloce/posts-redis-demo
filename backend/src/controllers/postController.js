@@ -7,7 +7,6 @@ const getPost = async (req, res) => {
   // get the post from redis
   const cachedPost = await client.get(`post-${id}`);
 
-  // che if exists
   if (cachedPost) {
     return res.json(JSON.parse(cachedPost));
   }
@@ -18,7 +17,7 @@ const getPost = async (req, res) => {
   );
 
   //save post in redis for 1 hour
-  client.set(`post-${id}`, JSON.stringify(response.data), { EX: 10 });
+  client.set(`post-${id}`, JSON.stringify(response.data), { EX: 60 * 60 });
 
   return res.json(response.data);
 };
@@ -41,8 +40,10 @@ const savePost = async (req, res) => {
   let opposite;
   if (savedPost === "1") {
     opposite = "0";
+    await client.publish("counter subtract 1", id);
   } else {
     opposite = "1";
+    await client.publish("counter add 1", id);
   }
 
   await client.set(`saved-${id}`, opposite);

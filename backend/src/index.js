@@ -5,6 +5,7 @@ const express = require("express");
 
 const redisClient = require("./redis/redisClient");
 const postRoutes = require("./routes/posts");
+const sessionRoutes = require("./routes/sessions");
 
 const PORT = process.env.PORT;
 
@@ -21,6 +22,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api/posts", postRoutes);
+app.use("/api/sessions", sessionRoutes);
 
 redisClient.client.connect();
 
